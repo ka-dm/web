@@ -19,6 +19,7 @@ class ResCompany(models.Model):
           background: %(color_navbar_bg)s !important;
           background-color: %(color_navbar_bg)s !important;
           color: %(color_navbar_text)s !important;
+          border-bottom: 0px solid %(color_navbar_bg)s !important;
 
           .show {
             .dropdown-toggle {
