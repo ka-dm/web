@@ -6,16 +6,24 @@
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <templates>
     <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
-        <!-- odoo 18 has created a left sidebar where the button of all apps
-        and the dropdown for the user where can logout
-        we had to disable the lef sidebar to keep our web_resposive toggle button working
-        and to keep the user dropdown in its original place -->
         <xpath expr="//t[@t-if='env.isSmall']" position="attributes">
             <attribute name="t-if">false</attribute>
         </xpath>
-        <!-- The kanban dropdown is replaced with the odoo default one
-        as the default one took physical place in the DOM -->
+
         <xpath expr="//Dropdown" position="replace">
+            <t t-if="env.isSmall">
+                <a
+                    href="/odoo"
+                    class="o_menu_toggle border-0"
+                    t-att-class="{'hasImage': currentApp?.webIconData}"
+                    accesskey="h"
+                    t-ref="menuApps"
+                    t-on-click.prevent="_openAppMenuSidebar"
+                >
+                    <t t-call="web.NavBar.AppsMenu.Sidebar" />
+                </a>
+            </t>
+            <t t-else="" />
             <AppsMenu>
                 <t t-set-slot="search_bar">
                     <AppsMenuSearchBar />
@@ -36,14 +44,53 @@
     <!-- Apps menu -->
     <t t-name="web_responsive.AppsMenu">
         <div class="o_grid_apps_menu" t-att-data-theme="theme">
-            <button
-                class="o_grid_apps_menu__button"
+            <a
+                name="o_grid_apps_menu__button"
+                class="o_grid_apps_menu__button o_menu_toggle border-0 hasImage"
                 title="Home Menu"
                 data-hotkey="h"
                 t-on-click.stop="onMenuClick"
             >
-                <i class="oi oi-apps fs-4" />
-            </button>
+                <svg
+                    t-if="!env.isSmall"
+                    class="o_menu_toggle_icon pe-none"
+                    width="14px"
+                    height="14px"
+                    viewBox="0 0 14 14"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <g
+                        t-foreach="[0, 5, 10]"
+                        t-as="Y"
+                        t-att-id="'o_menu_toggle_row_' + Y_index"
+                        fill="currentColor"
+                        t-key="'o_menu_toggle_row_' + Y_index"
+                    >
+                        <rect
+                            t-foreach="[0, 5, 10]"
+                            t-as="X"
+                            width="3"
+                            height="3"
+                            t-att-x="X"
+                            t-att-y="Y"
+                            t-key="'o_menu_toggle_cell_' + X_index"
+                        />
+                    </g>
+                </svg>
+                <img
+                    t-if="!env.isSmall and currentApp"
+                    t-att-src="currentApp.webIconData"
+                    class="o_menu_brand_icon d-inline position-absolute start-0 h-100 ps-1 ms-2"
+                    t-att-alt="currentApp.name"
+                    t-ref="appIcon"
+                />
+                <span
+                    t-if="!env.isSmall and currentApp"
+                    t-out="currentApp.name"
+                    class="o_menu_brand d-flex ms-3 pe-0"
+                />
+            </a>
+
             <div t-if="state.open" class="app-menu-container">
                 <t t-slot="search_bar" />
                 <div class="o-app-menu-list">
@@ -51,5 +98,17 @@
                 </div>
             </div>
         </div>
+    </t>
+
+    <!-- Apps Menu Sidebar -->
+    <t t-inherit="web.NavBar.AppsMenu.Sidebar" t-inherit-mode="extension">
+        <xpath expr="//small" position="replace">
+            <div class="d-flex align-items-center justify-content-between ms-2">
+                <button class="btn btn-primary" t-on-click="onCustomButtonClick">
+                    <i class="oi oi-apps" />
+                    <span class="px-2">All Apps</span>
+                </button>
+            </div>
+        </xpath>
     </t>
 </templates>

@@ -25,6 +25,7 @@ patch(WebClient.prototype, {
         super.setup();
         useBus(this.env.bus, "APPS_MENU:STATE_CHANGED", ({detail: state}) => {
             document.body.classList.toggle("o_apps_menu_opened", state);
+            document.body.setAttribute("data-theme", session.apps_menu.theme || "milk");
         });
         this.user = user;
         onWillStart(async () => {
@@ -64,11 +65,21 @@ export class AppsMenu extends Component {
             this.setOpenState(false);
         });
         this._setupKeyNavigation();
+        this._setupHoverDetection();
     }
 
     setOpenState(open_state) {
         this.state.open = open_state;
         this.env.bus.trigger("APPS_MENU:STATE_CHANGED", open_state);
+        if (open_state) {
+            document
+                .querySelector(".o_menu_toggle")
+                ?.classList.add("o_menu_toggle_back");
+        } else {
+            document
+                .querySelector(".o_menu_toggle")
+                ?.classList.remove("o_menu_toggle_back");
+        }
     }
 
     /**
@@ -134,6 +145,10 @@ export class AppsMenu extends Component {
         }
     }
 
+    get currentApp() {
+        return this.menuService.getCurrentApp();
+    }
+
     onMenuClick() {
         if (!user.context.is_redirect_to_home) {
             this.setOpenState(!this.state.open);
@@ -159,7 +174,44 @@ export class AppsMenu extends Component {
             }
         }
     }
+
+    _setupHoverDetection() {
+        const appsMenuButton = document.querySelector(".o_grid_apps_menu__button");
+        if (appsMenuButton) {
+            appsMenuButton.addEventListener("mouseenter", () => {
+                console.log("Apps menu button is being hovered");
+            });
+            appsMenuButton.addEventListener("mouseleave", () => {
+                console.log("Apps menu button is no longer being hovered");
+            });
+        }
+    }
 }
+
+// Add this patch after the WebClient patch
+patch(NavBar.prototype, {
+    setup() {
+        super.setup();
+
+        const style = document.createElement("style");
+        style.textContent = `
+            .o-dropdown-item.dropdown-item.o-navigable.o_menu_brand {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        this.onCustomButtonClick = () => {
+            const appsMenuButton = document.querySelector(
+                '[name="o_grid_apps_menu__button"]'
+            );
+            if (appsMenuButton) {
+                appsMenuButton.click();
+            }
+            this._closeAppMenuSidebar();
+        };
+    },
+});
 
 Object.assign(AppsMenu, {
     template: "web_responsive.AppsMenu",
