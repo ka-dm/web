@@ -43,7 +43,7 @@
     <t t-name="web_responsive.AppsMenu">
         <div class="o_grid_apps_menu" t-att-data-theme="theme">
 
-            <a href="/odoo" name="o_grid_apps_menu__button" class="o_grid_apps_menu__button o_menu_toggle border-0 hasImage" title="Home Menu" data-hotkey="h" t-on-click.stop="onMenuClick">
+            <a name="o_grid_apps_menu__button" class="o_grid_apps_menu__button o_menu_toggle border-0 hasImage" title="Home Menu" data-hotkey="h" t-on-click.stop="onMenuClick">
                 <svg t-if="!env.isSmall" class="o_menu_toggle_icon pe-none" width="14px" height="14px" viewBox="0 0 14 14"
                     xmlns="http://www.w3.org/2000/svg">
                     <g t-foreach="[0, 5, 10]" t-as="Y" t-att-id="'o_menu_toggle_row_' + Y_index" fill="currentColor" t-key="'o_menu_toggle_row_' + Y_index">

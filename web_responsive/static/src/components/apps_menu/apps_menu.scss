@@ -22,7 +22,6 @@
                 #{desaturate(lighten($o-brand-primary, 20%), 15)}
             );
     }
-
 }
 
 @mixin full-screen-dropdown {
@@ -34,7 +33,7 @@
     position: fixed;
     margin: 0;
     width: 100vw;
-    z-index: 0;
+    z-index: 1000;
     left: 0 !important;
 }
 
@@ -137,12 +136,20 @@
     background: transparent;
     font-size: 1em;
     color: var(--NavBar-entry-color, #1F2937);
+    
+    &:hover {
+        color: #111827;
+    }
+
 }
 
 .o_main_navbar .o_menu_brand,
 .o_main_navbar .o_navbar_breadcrumbs,
 .o_main_navbar .o_navbar_breadcrumbs .btn {
     color: var(--NavBar-brand-color, #374151);
+    &:hover {
+        color: #111827;
+    }
 }
 
 .o_main_navbar .o_menu_brand {
@@ -161,6 +168,11 @@
     background: transparent;
     font-size: 1em;
     color: var(--NavBar-entry-color, #1F2937);
+
+
+    &:hover {
+        color: #111827;
+    }
 }
 
 .o_grid_apps_menu__button {
@@ -205,4 +217,9 @@
         background-repeat: no-repeat;
         background-position: center;
     }
+
+    .o_action_manager {
+        opacity: 0;
+    }
+
 }
