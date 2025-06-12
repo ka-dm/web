@@ -6,24 +6,24 @@
  * Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {Component, onWillStart, useState} from "@odoo/owl";
-import {useBus, useService} from "@web/core/utils/hooks";
-import {AppMenuItem} from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
-import {AppsMenuSearchBar} from "@web_responsive/components/menu_searchbar/searchbar.esm";
-import {NavBar} from "@web/webclient/navbar/navbar";
-import {WebClient} from "@web/webclient/webclient";
-import {browser} from "@web/core/browser/browser";
-import {patch} from "@web/core/utils/patch";
-import {router} from "@web/core/browser/router";
-import {session} from "@web/session";
-import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
-import {user} from "@web/core/user";
+import { Component, onWillStart, useState } from "@odoo/owl";
+import { useBus, useService } from "@web/core/utils/hooks";
+import { AppMenuItem } from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
+import { AppsMenuSearchBar } from "@web_responsive/components/menu_searchbar/searchbar.esm";
+import { NavBar } from "@web/webclient/navbar/navbar";
+import { WebClient } from "@web/webclient/webclient";
+import { browser } from "@web/core/browser/browser";
+import { patch } from "@web/core/utils/patch";
+import { router } from "@web/core/browser/router";
+import { session } from "@web/session";
+import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
+import { user } from "@web/core/user";
 
 // Patch WebClient to show AppsMenu instead of default app
 patch(WebClient.prototype, {
     setup() {
         super.setup();
-        useBus(this.env.bus, "APPS_MENU:STATE_CHANGED", ({detail: state}) => {
+        useBus(this.env.bus, "APPS_MENU:STATE_CHANGED", ({ detail: state }) => {
             document.body.classList.toggle("o_apps_menu_opened", state);
             document.body.setAttribute("data-theme", session.apps_menu.theme || "milk");
         });
@@ -52,14 +52,14 @@ patch(WebClient.prototype, {
 export class AppsMenu extends Component {
     setup() {
         super.setup();
-        this.state = useState({open: false});
+        this.state = useState({ open: false });
         this.theme = session.apps_menu.theme || "milk";
         this.menuService = useService("menu");
         browser.localStorage.setItem("redirect_menuId", "");
         if (user.context.is_redirect_to_home) {
             this.router = router;
             const menuId = Number(this.router.current.menu_id || 0);
-            this.state = useState({open: menuId === 0});
+            this.state = useState({ open: menuId === 0 });
         }
         useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", () => {
             this.setOpenState(false);
@@ -156,7 +156,7 @@ export class AppsMenu extends Component {
             } else {
                 this.setOpenState(!this.state.open);
             }
-            const {href, hash} = location;
+            const { href, hash } = location;
             const menuId = this.router.current.menu_id;
             if (menuId && menuId !== redirect_menuId) {
                 browser.localStorage.setItem(
@@ -217,4 +217,4 @@ Object.assign(AppsMenu, {
     },
 });
 
-Object.assign(NavBar.components, {AppsMenu, AppMenuItem, AppsMenuSearchBar});
+Object.assign(NavBar.components, { AppsMenu, AppMenuItem, AppsMenuSearchBar });

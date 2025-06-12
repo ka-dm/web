@@ -6,12 +6,12 @@
      License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
 <templates>
     <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
-        
+
         <xpath expr="//t[@t-if='env.isSmall']" position="attributes">
             <attribute name="t-if">false</attribute>
         </xpath>
-        
-        
+
+
         <xpath expr="//Dropdown" position="replace">
 
             <t t-if="env.isSmall">
@@ -25,15 +25,7 @@
                 <t t-set-slot="search_bar">
                     <AppsMenuSearchBar />
                 </t>
-                <AppMenuItem
-                    t-foreach="apps"
-                    t-as="app"
-                    t-key="app.id"
-                    app="app"
-                    currentApp="currentApp"
-                    href="getMenuItemHref(app)"
-                    onClick="onNavBarDropdownItemSelection.bind(this)"
-                />
+                <AppMenuItem t-foreach="apps" t-as="app" t-key="app.id" app="app" currentApp="currentApp" href="getMenuItemHref(app)" onClick="onNavBarDropdownItemSelection.bind(this)" />
             </AppsMenu>
 
         </xpath>
@@ -65,15 +57,15 @@
 
     <!-- Apps Menu Sidebar -->
     <t t-inherit="web.NavBar.AppsMenu.Sidebar" t-inherit-mode="extension">
-    <xpath expr="//small" position="replace">
-        <div class="d-flex align-items-center justify-content-between ms-2">
-            <button class="btn btn-primary" t-on-click="onCustomButtonClick">
-                <i class="oi oi-apps"></i>
-                <span class="px-2">All Apps</span>
-            </button>
-        </div>
-    </xpath>
+        <xpath expr="//small" position="replace">
+            <div class="d-flex align-items-center justify-content-between ms-2">
+                <button class="btn btn-primary" t-on-click="onCustomButtonClick">
+                    <i class="oi oi-apps"></i>
+                    <span class="px-2">All Apps</span>
+                </button>
+            </div>
+        </xpath>
     </t>
-    
+
 
 </templates>
