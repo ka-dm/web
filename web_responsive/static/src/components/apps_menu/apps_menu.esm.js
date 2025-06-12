@@ -71,6 +71,11 @@ export class AppsMenu extends Component {
     setOpenState(open_state) {
         this.state.open = open_state;
         this.env.bus.trigger("APPS_MENU:STATE_CHANGED", open_state);
+        if (open_state) {
+            document.querySelector('.o_menu_toggle')?.classList.add('o_menu_toggle_back');
+        } else {
+            document.querySelector('.o_menu_toggle')?.classList.remove('o_menu_toggle_back');
+        }
     }
 
     /**
