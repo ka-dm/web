@@ -42,6 +42,10 @@
     .o_menu_sections {
         display: none !important;
     }
+
+    .o_menu_brand_icon {
+        display: none !important;
+    }
 }
 
 // hide and save odoo default QUnit tests
@@ -223,3 +227,4 @@
     }
 
 }
+
