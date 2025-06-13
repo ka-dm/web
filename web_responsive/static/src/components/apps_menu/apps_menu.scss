@@ -6,23 +6,17 @@
 
 :root {
     .o_grid_apps_menu[data-theme="milk"] {
-        --app-menu-background:
-            url("../../img/home-menu-bg-overlay.svg"),
-            linear-gradient(
-                to bottom,
-                #{$app-menu-background-color},
-                #{desaturate(lighten($app-menu-background-color, 20%), 15)}
-            );
+        --app-menu-background: url("../../img/home-menu-bg-overlay.svg"),
+        linear-gradient(to bottom,
+            #{$app-menu-background-color},
+            #{desaturate(lighten($app-menu-background-color, 20%), 15)});
     }
 
     .o_grid_apps_menu[data-theme="community"] {
-        --app-menu-background:
-            url("../../img/home-menu-bg-overlay.svg"),
-            linear-gradient(
-                to bottom,
-                #{$o-brand-primary},
-                #{desaturate(lighten($o-brand-primary, 20%), 15)}
-            );
+        --app-menu-background: url("../../img/home-menu-bg-overlay.svg"),
+        linear-gradient(to bottom,
+            #{$o-brand-primary},
+            #{desaturate(lighten($o-brand-primary, 20%), 15)});
     }
 }
 
@@ -40,6 +34,7 @@
 }
 
 .o_apps_menu_opened .o_main_navbar {
+
     .o_menu_brand,
     .o_menu_sections {
         display: none !important;
@@ -104,7 +99,7 @@
     justify-content: flex-start;
 
     // Hide app icons when searching
-    .has-results ~ .o-app-menu-list {
+    .has-results~.o-app-menu-list {
         display: none;
     }
 
@@ -193,18 +188,16 @@
 .o_apps_menu_opened .o_main_navbar {
     background: transparent !important;
     border-bottom-color: transparent !important;
+    z
 }
 
 .o_apps_menu_opened,
 .o_web_client.o_apps_menu_opened {
     &[data-theme="milk"] {
-        background-image:
-            url("../../img/home-menu-bg-overlay.svg"),
-            linear-gradient(
-                to bottom,
-                #{$app-menu-background-color},
-                #{desaturate(lighten($app-menu-background-color, 20%), 15)}
-            );
+        background-image: url("../../img/home-menu-bg-overlay.svg"),
+        linear-gradient(to bottom,
+            #{$app-menu-background-color},
+            #{desaturate(lighten($app-menu-background-color, 20%), 15)});
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
@@ -212,13 +205,10 @@
     }
 
     &[data-theme="community"] {
-        background-image:
-            url("../../img/home-menu-bg-overlay.svg"),
-            linear-gradient(
-                to bottom,
-                #{$o-brand-primary},
-                #{desaturate(lighten($o-brand-primary, 20%), 15)}
-            );
+        background-image: url("../../img/home-menu-bg-overlay.svg"),
+        linear-gradient(to bottom,
+            #{$o-brand-primary},
+            #{desaturate(lighten($o-brand-primary, 20%), 15)});
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
