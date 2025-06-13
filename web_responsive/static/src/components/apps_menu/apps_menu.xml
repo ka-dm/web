@@ -35,7 +35,7 @@
     <!-- Apps menu -->
     <t t-name="web_responsive.AppsMenu">
         <div class="o_grid_apps_menu" t-att-data-theme="theme">
-            <a
+            <button
                 name="o_grid_apps_menu__button"
                 class="o_grid_apps_menu__button o_menu_toggle border-0 hasImage"
                 title="Home Menu"
@@ -79,7 +79,7 @@
                     t-out="currentApp.name"
                     class="o_menu_brand d-flex ms-3 pe-0"
                 />
-            </a>
+            </button>
 
             <div t-if="state.open" class="app-menu-container">
                 <t t-slot="search_bar" />
