@@ -18,6 +18,7 @@ import { router } from "@web/core/browser/router";
 import { session } from "@web/session";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { user } from "@web/core/user";
+import { BurgerMenu } from "@web/webclient/burger_menu/burger_menu";
 
 // Patch WebClient to show AppsMenu instead of default app
 patch(WebClient.prototype, {
@@ -64,8 +65,10 @@ export class AppsMenu extends Component {
         useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", () => {
             this.setOpenState(false);
         });
+        useBus(this.env.bus, "APP_MENU:OPEN_APP_MENU", () => {
+            this.onMenuClick();
+        });
         this._setupKeyNavigation();
-        this._setupHoverDetection();
     }
 
     setOpenState(open_state) {
@@ -152,7 +155,12 @@ export class AppsMenu extends Component {
             const redirect_menuId =
                 browser.localStorage.getItem("redirect_menuId") || "";
             if (!redirect_menuId) {
-                this.setOpenState(true);
+                if (this.state.open) {
+                    this.setOpenState(false);
+                } else {
+                    this.setOpenState(true);
+                }
+
             } else {
                 this.setOpenState(!this.state.open);
             }
@@ -165,22 +173,13 @@ export class AppsMenu extends Component {
                 );
             }
 
+            
+
             if (href.includes(hash)) {
                 window.history.replaceState(null, "", href.replace(hash, ""));
             }
         }
-    }
-
-    _setupHoverDetection() {
-        const appsMenuButton = document.querySelector('.o_grid_apps_menu__button');
-        if (appsMenuButton) {
-            appsMenuButton.addEventListener('mouseenter', () => {
-                console.log('Apps menu button is being hovered');
-            });
-            appsMenuButton.addEventListener('mouseleave', () => {
-                console.log('Apps menu button is no longer being hovered');
-            });
-        }
+        
     }
 }
 
@@ -189,6 +188,10 @@ patch(NavBar.prototype, {
     setup() {
         super.setup();
 
+        useBus(this.env.bus, "APP_MENU:TOGGLE_SIDEBAR", () => {
+            this._openAppMenuSidebar();
+        });
+
         const style = document.createElement('style');
         style.textContent = `
             .o-dropdown-item.dropdown-item.o-navigable.o_menu_brand {
@@ -196,15 +199,13 @@ patch(NavBar.prototype, {
             }
         `;
         document.head.appendChild(style);
-
-        this.onCustomButtonClick = () => {
-            const appsMenuButton = document.querySelector('[name="o_grid_apps_menu__button"]');
-            if (appsMenuButton) {
-                appsMenuButton.click();
-            }
-            this._closeAppMenuSidebar();
-        };
     },
+
+    openAppMenu() {
+        this.env.bus.trigger("APP_MENU:OPEN_APP_MENU");
+        this._closeAppMenuSidebar();
+    }
+
 });
 
 Object.assign(AppsMenu, {
@@ -218,3 +219,15 @@ Object.assign(AppsMenu, {
 });
 
 Object.assign(NavBar.components, { AppsMenu, AppMenuItem, AppsMenuSearchBar });
+
+
+// Add this patch after the WebClient patch
+patch(BurgerMenu.prototype, {
+    setup() {
+        super.setup();
+    },
+
+    _openAppMenuSidebarMobile() {
+        this.env.bus.trigger("APP_MENU:TOGGLE_SIDEBAR");
+    }
+});

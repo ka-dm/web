@@ -15,9 +15,7 @@
         <xpath expr="//Dropdown" position="replace">
 
             <t t-if="env.isSmall">
-                <a href="/odoo" class="o_menu_toggle border-0" t-att-class="{'hasImage': currentApp?.webIconData}" accesskey="h" t-ref="menuApps" t-on-click.prevent="_openAppMenuSidebar">
-                    <t t-call="web.NavBar.AppsMenu.Sidebar"/>
-                </a>
+                <t t-call="web.NavBar.AppsMenu.Sidebar"/>
             </t>
             <t t-else="">
             </t>
@@ -36,7 +34,7 @@
         <div class="o_grid_apps_menu" t-att-data-theme="theme">
 
             <a name="o_grid_apps_menu__button" class="o_grid_apps_menu__button o_menu_toggle border-0 hasImage" title="Home Menu" data-hotkey="h" t-on-click.stop="onMenuClick">
-                <svg t-if="!env.isSmall" class="o_menu_toggle_icon pe-none" width="14px" height="14px" viewBox="0 0 14 14"
+                <svg class="o_menu_toggle_icon pe-none" width="14px" height="14px" viewBox="0 0 14 14"
                     xmlns="http://www.w3.org/2000/svg">
                     <g t-foreach="[0, 5, 10]" t-as="Y" t-att-id="'o_menu_toggle_row_' + Y_index" fill="currentColor" t-key="'o_menu_toggle_row_' + Y_index">
                         <rect t-foreach="[0, 5, 10]" t-as="X" width="3" height="3" t-att-x="X" t-att-y="Y" t-key="'o_menu_toggle_cell_' + X_index"/>
@@ -57,15 +55,48 @@
 
     <!-- Apps Menu Sidebar -->
     <t t-inherit="web.NavBar.AppsMenu.Sidebar" t-inherit-mode="extension">
+
+        <xpath expr="//i[hasclass('fa fa-bars')]" position="replace">
+            <!-- Remove the burger menu icon -->
+        </xpath>
+
+        <xpath expr="//div[hasclass('o_app_menu_sidebar')]" position="attributes">
+            <attribute name="class">o_app_menu_sidebar position-fixed top-0 bottom-0 start-100 d-flex flex-column flex-nowrap</attribute>
+        </xpath>
+
         <xpath expr="//small" position="replace">
             <div class="d-flex align-items-center justify-content-between ms-2">
-                <button class="btn btn-primary" t-on-click="onCustomButtonClick">
-                    <i class="oi oi-apps"></i>
+                <button class="btn btn-primary" t-on-click="openAppMenu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="o_menu_toggle_icon pe-none" width="14px" height="14px" viewBox="0 0 14 14">
+                        <g xmlns="http://www.w3.org/2000/svg" fill="currentColor" id="o_menu_toggle_row_0">
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="0" y="0"></rect>
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="5" y="0"></rect>
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="10" y="0"></rect>
+                        </g>
+                        <g xmlns="http://www.w3.org/2000/svg" fill="currentColor" id="o_menu_toggle_row_1">
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="0" y="5"></rect>
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="5" y="5"></rect>
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="10" y="5"></rect>
+                        </g>
+                        <g xmlns="http://www.w3.org/2000/svg" fill="currentColor" id="o_menu_toggle_row_2">
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="0" y="10"></rect>
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="5" y="10"></rect>
+                            <rect xmlns="http://www.w3.org/2000/svg" width="3" height="3" x="10" y="10"></rect>
+                        </g>
+                    </svg>
                     <span class="px-2">All Apps</span>
                 </button>
             </div>
         </xpath>
     </t>
 
+    <!-- Burger Menu -->
+    <t t-inherit="web.BurgerMenu" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('o_mobile_menu_toggle')]" position="after">
+            <button class="o_mobile_menu_toggle o_nav_entry o-no-caret d-md-none border-0 pe-3" t-on-click.prevent="_openAppMenuSidebarMobile">
+                <i class="oi oi-panel-right"></i>
+            </button>
+        </xpath>
+    </t>
 
 </templates>
