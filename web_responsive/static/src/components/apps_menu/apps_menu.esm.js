@@ -69,6 +69,7 @@ export class AppsMenu extends Component {
             this.onMenuClick();
         });
         this._setupKeyNavigation();
+        this._setupHoverDetection();
     }
 
     setOpenState(open_state) {
@@ -181,6 +182,18 @@ export class AppsMenu extends Component {
             }
         }
     }
+
+    _setupHoverDetection() {
+        const appsMenuButton = document.querySelector(".o_grid_apps_menu__button");
+        if (appsMenuButton) {
+            appsMenuButton.addEventListener("mouseenter", () => {
+                console.log("Apps menu button is being hovered");
+            });
+            appsMenuButton.addEventListener("mouseleave", () => {
+                console.log("Apps menu button is no longer being hovered");
+            });
+        }
+    }
 }
 
 // Add this patch after the WebClient patch
@@ -191,6 +204,7 @@ patch(NavBar.prototype, {
         useBus(this.env.bus, "APP_MENU:TOGGLE_SIDEBAR", () => {
             this._openAppMenuSidebar();
         });
+
 
         const style = document.createElement("style");
         style.textContent = `
